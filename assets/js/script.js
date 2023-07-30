@@ -1,5 +1,6 @@
-var displayResult = document.querySelector('#displayResult')
+var displayResult = document.querySelector('#displayResult');
 var displayTimer = document.querySelector('#countDownTimer');
+var displayAnswer = document.querySelector('#answerStatus');
 
 var questionList =[
     {
@@ -69,7 +70,17 @@ function startQuiz() {
             btnE1.addEventListener('click', function() {
               var selectedAnswer = answer;
               if (selectedAnswer === questionList[i].correctAnswer) { 
+                var displayAnswerText = document.createElement('h3');
+                displayAnswerText.textContent = 'Correct!'
+                displayAnswer.innerHTML='';
+                displayAnswer.appendChild(displayAnswerText);
               } else {
+                timer=timer -5;
+                updateTimer();
+                var displayAnswerText = document.createElement('h3');
+                displayAnswerText.textContent = 'Incorrect!'
+                displayAnswer.innerHTML='';
+                displayAnswer.appendChild(displayAnswerText);
               }
               nextQuestion()
             });
