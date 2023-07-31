@@ -8,7 +8,7 @@ Gives the user a short coding quiz!
 
 N/A
 
-##Screenshots
+## Screenshots
 
 ![alt text](assets/imgs/screenshot.png)
 ![alt text](assets/imgs/screenshot1.png)
