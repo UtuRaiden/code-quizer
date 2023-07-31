@@ -32,12 +32,13 @@ var questionList =[
 var questionLength = questionList.length;
 var i = 0;
 var timer = 60;
+var score = 0;
 
 // Function to update the timer display
 function updateTimer() {
   var timerText = document.createElement('p');
   timerText.textContent = 'Time Left: ' + timer+ ' seconds';
-  displayTimer.innerHTML = ''; // Clear previous content before adding new timerText
+  displayTimer.innerHTML = '';
   displayTimer.appendChild(timerText);
   timer--;
 
@@ -47,12 +48,22 @@ function updateTimer() {
   }
 }
 
-var timerInterval = setInterval(updateTimer, 1000);
+var pageOpen = freshPage();
+displayResult.appendChild(pageOpen);
 
-var displayE1 = startQuiz();
-var score = 0;
-
-displayResult.appendChild(displayE1);
+function freshPage() {
+  displayResult.innerHTML = '';
+  var display = document.createElement('div');
+  var start = document.createElement('button');
+  start.textContent = 'Start Quiz!';
+  start.addEventListener('click', function() {
+    var displayE1 = startQuiz();
+    displayResult.appendChild(displayE1);
+    timerInterval = setInterval(updateTimer, 1000);
+  });
+  display.appendChild(start);
+  return display;
+}
 
 function startQuiz() {
     updateTimer();
@@ -77,7 +88,7 @@ function startQuiz() {
                 displayAnswer.appendChild(displayAnswerText);
                 score +=5;
               } else {
-                timer=timer -5;
+                timer=timer -15;
                 updateTimer();
                 var displayAnswerText = document.createElement('h3');
                 displayAnswerText.textContent = 'Incorrect!'
