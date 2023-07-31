@@ -133,6 +133,7 @@ function startQuiz() {
             nameInput.value = '';
             displayAnswer.innerHTML='';
             displayResult.textContent = `Thank you for Submitting!`;
+            console.log(playerName,score);
 
           });
       
