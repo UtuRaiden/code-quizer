@@ -1,10 +1,10 @@
 # code-quizer
 
-##Description
+## Description
 
 Gives the user a short coding quiz!
 
-##Installation
+## Installation
 
 N/A
 
