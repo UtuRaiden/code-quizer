@@ -145,9 +145,9 @@ function startQuiz() {
           displayResult.appendChild(inputContainer);
         }
       }
-      //used to save the high scores
+      //used to save the high scores if there is no high scores it will create and empty array
       function saveHighScore(name,score) {
-        var highScores = JSON.parse(localStorage.getItem("highScores"));
+        var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
         var newScore = { name: name, score: score };
         highScores.push(newScore);
         localStorage.setItem("highScores", JSON.stringify(highScores));
@@ -169,9 +169,9 @@ function startQuiz() {
       
         alert(message);
       }
-//gets all the scores
+//gets all the scores if there is no highscores it will create an empty array
       function getHighScores() {
-        return JSON.parse(localStorage.getItem("highScores"));
+        return JSON.parse(localStorage.getItem("highScores")) || [];
       }
 //clears all the scores
       function clearHighScore() {
