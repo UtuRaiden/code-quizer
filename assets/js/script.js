@@ -47,8 +47,6 @@ function updateTimer() {
   }
 }
 
-updateTimer();
-
 var timerInterval = setInterval(updateTimer, 1000);
 
 var displayE1 = startQuiz();
@@ -57,7 +55,8 @@ var score = 0;
 displayResult.appendChild(displayE1);
 
 function startQuiz() {
-    //displayResult.innerHTML="";
+    updateTimer();
+    displayResult.innerHTML="";
     var display = document.createElement('div');
     var questionE1 = document.createElement('h2');
     var answersE1 = document.createElement('div');
@@ -110,11 +109,11 @@ function startQuiz() {
           submitButton.textContent = 'Submit';
           submitButton.addEventListener('click', function() {
             var playerName = nameInput.value;
-            localStorage.setItem(playerName,score)
+            saveHighScore(playerName,score);
             nameInput.value = '';
-            // Reset the displayResult to show the quiz completed message again
-            displayResult.textContent = `Quiz completed! Your score is ${score}. Please put in your name for the High score leader board! `;
-            displayResult.appendChild(inputContainer);
+            displayAnswer.innerHTML='';
+            displayResult.textContent = `Thank you for Submitting!`;
+
           });
       
           var inputContainer = document.createElement('div');
@@ -126,4 +125,33 @@ function startQuiz() {
           displayResult.appendChild(inputContainer);
         }
       }
+      function saveHighScore(name,score) {
+        var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+        var newScore = { name: name, score: score };
+        highScores.push(newScore);
+        localStorage.setItem("highScores", JSON.stringify(highScores));
+      }
+
+      function showHighScores() {
+        var highScoresData = getHighScores();
       
+        if (highScoresData.length === 0) {
+          alert("No high scores yet!");
+          return;
+        }
+      
+        var message = "High Scores:\n";
+        for (var i = 0; i < highScoresData.length; i++) {
+          message += highScoresData[i].name + ": " + highScoresData[i].score + "\n";
+        }
+      
+        alert(message);
+      }
+
+      function getHighScores() {
+        return JSON.parse(localStorage.getItem("highScores")) || [];
+      }
+
+      function clearHighScore() {
+        localStorage.clear();
+      }
