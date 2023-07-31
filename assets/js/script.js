@@ -76,7 +76,7 @@ function startQuiz() {
     var display = document.createElement('div');
     var questionE1 = document.createElement('h2');
     var answersE1 = document.createElement('div');
-  console.log(questionList[i])
+  
     questionE1.textContent = questionList[i].questionText;
   //create a button for every single answer
     for (let j = 0; j < questionList[i].answers.length; j++) {
@@ -133,7 +133,7 @@ function startQuiz() {
             nameInput.value = '';
             displayAnswer.innerHTML='';
             displayResult.textContent = `Thank you for Submitting!`;
-            console.log(playerName,score);
+          
 
           });
       
