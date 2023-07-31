@@ -47,10 +47,12 @@ function updateTimer() {
   }
 }
 
-// Set up the timer interval
+updateTimer();
+
 var timerInterval = setInterval(updateTimer, 1000);
 
 var displayE1 = startQuiz();
+var score = 0;
 
 displayResult.appendChild(displayE1);
 
@@ -74,6 +76,7 @@ function startQuiz() {
                 displayAnswerText.textContent = 'Correct!'
                 displayAnswer.innerHTML='';
                 displayAnswer.appendChild(displayAnswerText);
+                score +=5;
               } else {
                 timer=timer -5;
                 updateTimer();
@@ -97,6 +100,30 @@ function startQuiz() {
           displayResult.innerHTML = "";
           displayResult.appendChild(displayE1);
         } else {
-          displayResult.textContent = "Quiz completed";
+          clearInterval(timerInterval);
+      
+          var nameInput = document.createElement('input');
+          nameInput.type = 'text';
+          nameInput.placeholder = 'Enter your name';
+      
+          var submitButton = document.createElement('button');
+          submitButton.textContent = 'Submit';
+          submitButton.addEventListener('click', function() {
+            var playerName = nameInput.value;
+            localStorage.setItem(playerName,score)
+            nameInput.value = '';
+            // Reset the displayResult to show the quiz completed message again
+            displayResult.textContent = `Quiz completed! Your score is ${score}. Please put in your name for the High score leader board! `;
+            displayResult.appendChild(inputContainer);
+          });
+      
+          var inputContainer = document.createElement('div');
+          inputContainer.appendChild(nameInput);
+          inputContainer.appendChild(submitButton);
+      
+          score += timer;
+          displayResult.textContent = `Quiz completed! Your score is ${score}. Please put in your name for the High score leader board! `;
+          displayResult.appendChild(inputContainer);
         }
       }
+      
