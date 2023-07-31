@@ -1,7 +1,9 @@
+//get all my necessary ID's for displaying on the front end
 var displayResult = document.querySelector('#displayResult');
 var displayTimer = document.querySelector('#countDownTimer');
 var displayAnswer = document.querySelector('#answerStatus');
 
+//add all of the questions to an array to call upon later
 var questionList =[
     {
         questionText: "Javascript is an _______ language?",
@@ -29,19 +31,20 @@ var questionList =[
         correctAnswer:"All of the above",
     },
 ]
+//declare accumulators
 var questionLength = questionList.length;
 var i = 0;
 var timer = 60;
 var score = 0;
 
-// Function to update the timer display
+//update the timer display
 function updateTimer() {
   var timerText = document.createElement('p');
   timerText.textContent = 'Time Left: ' + timer+ ' seconds';
   displayTimer.innerHTML = '';
   displayTimer.appendChild(timerText);
   timer--;
-
+//if the timer hits 0 stop counting down and finish the quiz
   if (timer < 0) {
     clearInterval(timerInterval);
     displayResult.textContent = "Time's up! Quiz completed";
@@ -51,11 +54,13 @@ function updateTimer() {
 var pageOpen = freshPage();
 displayResult.appendChild(pageOpen);
 
+//creates the landing page with the start quiz button
 function freshPage() {
   displayResult.innerHTML = '';
   var display = document.createElement('div');
   var start = document.createElement('button');
   start.textContent = 'Start Quiz!';
+  //event listener for the button to start the quiz and the timer
   start.addEventListener('click', function() {
     var displayE1 = startQuiz();
     displayResult.appendChild(displayE1);
@@ -65,15 +70,15 @@ function freshPage() {
   return display;
 }
 
+//displays the first question
 function startQuiz() {
-    updateTimer();
     displayResult.innerHTML="";
     var display = document.createElement('div');
     var questionE1 = document.createElement('h2');
     var answersE1 = document.createElement('div');
   console.log(questionList[i])
     questionE1.textContent = questionList[i].questionText;
-  
+  //create a button for every single answer
     for (let j = 0; j < questionList[i].answers.length; j++) {
         var btnE1 = document.createElement('button');
         btnE1.textContent = questionList[i].answers[j];
@@ -81,20 +86,22 @@ function startQuiz() {
         (function(answer) {
             btnE1.addEventListener('click', function() {
               var selectedAnswer = answer;
+              //if the answer was correct add 15 to the score and display Correct 
               if (selectedAnswer === questionList[i].correctAnswer) { 
                 var displayAnswerText = document.createElement('h3');
                 displayAnswerText.textContent = 'Correct!'
                 displayAnswer.innerHTML='';
                 displayAnswer.appendChild(displayAnswerText);
-                score +=5;
-              } else {
-                timer=timer -15;
+                score +=15;
+              } else {//if the answer was incorrect display Incorrect and subtract 15 seconds from the timer
+                timer-=15;
                 updateTimer();
                 var displayAnswerText = document.createElement('h3');
                 displayAnswerText.textContent = 'Incorrect!'
                 displayAnswer.innerHTML='';
                 displayAnswer.appendChild(displayAnswerText);
               }
+              //call the function to cycle through the remaining questions
               nextQuestion()
             });
           })(questionList[i].answers[j]);
@@ -103,15 +110,16 @@ function startQuiz() {
         display.append(questionE1, answersE1);
         return display;
       }
+
       function nextQuestion() {
         i++;
         if (i < questionLength) {
           var displayE1 = startQuiz();
           displayResult.innerHTML = "";
           displayResult.appendChild(displayE1);
-        } else {
+        } else {//if there is no more questions stop the timer
           clearInterval(timerInterval);
-      
+      //create input box for the high score
           var nameInput = document.createElement('input');
           nameInput.type = 'text';
           nameInput.placeholder = 'Enter your name';
@@ -120,6 +128,7 @@ function startQuiz() {
           submitButton.textContent = 'Submit';
           submitButton.addEventListener('click', function() {
             var playerName = nameInput.value;
+            //pass the players name and the score values to the saveHighScore function
             saveHighScore(playerName,score);
             nameInput.value = '';
             displayAnswer.innerHTML='';
@@ -136,14 +145,16 @@ function startQuiz() {
           displayResult.appendChild(inputContainer);
         }
       }
+      //used to save the high scores
       function saveHighScore(name,score) {
-        var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+        var highScores = JSON.parse(localStorage.getItem("highScores"));
         var newScore = { name: name, score: score };
         highScores.push(newScore);
         localStorage.setItem("highScores", JSON.stringify(highScores));
       }
-
+//displays the high scores in an alertbox
       function showHighScores() {
+        //calls the function to get the highscores
         var highScoresData = getHighScores();
       
         if (highScoresData.length === 0) {
@@ -158,11 +169,11 @@ function startQuiz() {
       
         alert(message);
       }
-
+//gets all the scores
       function getHighScores() {
-        return JSON.parse(localStorage.getItem("highScores")) || [];
+        return JSON.parse(localStorage.getItem("highScores"));
       }
-
+//clears all the scores
       function clearHighScore() {
         localStorage.clear();
       }
